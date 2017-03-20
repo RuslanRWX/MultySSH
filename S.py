@@ -56,7 +56,7 @@ def find():
 				#	continue
 				if len(sys.argv) > 1:
 					Reg=sys.argv[1]
-					if re.search(Reg, parts[0]):
+					if re.search(Reg, parts[0]) or re.search(Reg,  parts[1]):
 						IP = Args['ansible_ssh_host']
 						PORT = Args['ansible_ssh_port']
 						CountNum = CountNum+1
