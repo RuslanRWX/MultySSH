@@ -1,7 +1,6 @@
 #!/usr/bin/python -t
 # Copyright (c) 2017 Ruslan Variushkin,  ruslan@host4.biz
-# Version 0.1.2
-
+# Version 0.1.3
 
 import sys
 import re
@@ -36,6 +35,53 @@ def checkperm(line):
 		return 1
 
 def find():
+    Count_Server=0
+    CountNum=0
+    Last_Group = "none"
+    Group = "none"
+    for line in list:
+        parts = line.split()
+        if len(parts) > 0:
+            from colorama import Fore, Back, Style
+            #if re.match( "^\[", parts[0]) is not None:
+            if re.match( "^#|^\[", parts[0]) is None:
+                Args=dict(s.split("=") for s in parts[1:])
+                user=getpass.getuser()
+                #print "Your user is "+ user
+                Group = Args['group']
+                if re.search( user, Args['users']) is None:
+                    continue
+                if len(sys.argv) > 1:
+                    Reg=sys.argv[1]
+                    if re.search(Reg, parts[0]) or re.search(Reg,  parts[1]):
+                        IP = Args['ansible_ssh_host']
+                        PORT = Args['ansible_ssh_port']
+                        CountNum = CountNum+1
+                        if Group != Last_Group:
+                            print "\n"
+                        Hostprint(parts[0], IP, Group)
+                        Count_Server = Count_Server+1
+                else:
+                    IP = Args['ansible_ssh_host']
+                    PORT = Args['ansible_ssh_port']
+                    if Group != Last_Group:
+                        print "\n"
+                    Hostprint(parts[0], IP, Group)
+                    Count_Server = Count_Server+1                        
+        Last_Group = Group
+    print "\nNumber of servers: ", Count_Server
+    if CountNum == 1:
+        #print  "IP: "+  IP	+" Group: "+ Group
+        connect(IP,PORT)
+    exit(0)
+
+def Hostprint(host, ip, group):
+    from colorama import Fore, Back, Style
+    print  (Fore.WHITE  + host + Fore.CYAN+"      IP: "+Fore.RESET +  ip +	 Fore.CYAN+"        Group: "+Fore.RESET + group )
+
+
+
+def find2():
 	Count_Server=0
 	CountNum=0
 	Last_Group = "none"
@@ -72,7 +118,7 @@ def find():
 					PORT = Args['ansible_ssh_port']
 					if Group != Last_Group:
 						print "\n"
-					print  parts[0] +"		IP: "+  IP	+" Group: "+ Group
+					print  (  parts[0] +"		IP: "+  IP	+" Group: "+ Group )
 					Count_Server = Count_Server+1
 				
 		Last_Group = Group
