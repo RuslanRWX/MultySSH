@@ -41,7 +41,7 @@ def find():
 		parts = line.split()
 		if len(parts) > 0:
 			#if re.match( "^\[", parts[0]) is not None:
-			#	print parts[0]
+			#print parts[0]
 
 			if re.match( "^#|^\[", parts[0]) is None:
 				#perm = checkperm(parts[1:])
@@ -56,7 +56,7 @@ def find():
 				#	continue
 				if len(sys.argv) > 1:
 					Reg=sys.argv[1]
-					if re.match(Reg, parts[0]):
+					if re.search(Reg, parts[0]):
 						IP = Args['ansible_ssh_host']
 						PORT = Args['ansible_ssh_port']
 						CountNum = CountNum+1
@@ -94,6 +94,6 @@ def main():
 
 	exit(0)
 	
-
-main()
+if __name__ == '__main__':
+    main()
 
