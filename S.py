@@ -1,4 +1,7 @@
 #!/usr/bin/python -t
+# Copyright (c) 2017 Ruslan Variushkin,  ruslan@host4.biz
+# Version 0.1.2
+
 
 import sys
 import re
