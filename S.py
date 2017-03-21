@@ -2,6 +2,9 @@
 # Copyright (c) 2017 Ruslan Variushkin,  ruslan@host4.biz
 # Version 0.1.3
 
+log_file='/var/log/multyssh/S.log'
+
+
 import sys
 import re
 import io
@@ -54,6 +57,7 @@ def find():
                 if len(sys.argv) > 1:
                     Reg=sys.argv[1]
                     if re.search(Reg, parts[0]) or re.search(Reg,  parts[1]):
+                        Host=parts[0]
                         IP = Args['ansible_ssh_host']
                         PORT = Args['ansible_ssh_port']
                         CountNum = CountNum+1
@@ -62,6 +66,7 @@ def find():
                         Hostprint(parts[0], IP, Group)
                         Count_Server = Count_Server+1
                 else:
+                    Host=parts[0]
                     IP = Args['ansible_ssh_host']
                     PORT = Args['ansible_ssh_port']
                     if Group != Last_Group:
@@ -72,7 +77,7 @@ def find():
     print "\nNumber of servers: ", Count_Server
     if CountNum == 1:
         #print  "IP: "+  IP	+" Group: "+ Group
-        connect(IP,PORT)
+        connect(Host, IP,PORT)
     exit(0)
 
 def Hostprint(host, ip, group):
@@ -80,11 +85,16 @@ def Hostprint(host, ip, group):
     print  (Fore.WHITE  + host + Fore.CYAN+"      IP: "+Fore.RESET +  ip +	 Fore.CYAN+"        Group: "+Fore.RESET + group )
 
 
+def connect(host, ip,port):
+    import os
+    directory = os.path.dirname(log_file)
+    try:
+        os.stat(directory)
+    except:
+        os.mkdir(directory)
+    os.system('echo User:`whoami` DATE:[`date`]  HOST: %s  IP: %s PORT:%s >> %s'%(host, ip,port,log_file) )
+    os.system('sudo ssh -p'+ port +' root@'+ip)
 
-def connect(ip,port):
-	import os
-	os.system('sudo ssh -p'+ port +' root@'+ip)
-	#print "Your ip of server is "+ ip
 
 
 def main():
