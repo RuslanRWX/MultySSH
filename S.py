@@ -87,12 +87,18 @@ def Hostprint(host, ip, group):
 
 def connect(host, ip,port):
     import os
+    import getpass
+    import datetime
     directory = os.path.dirname(log_file)
+    DateTime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         os.stat(directory)
     except:
         os.mkdir(directory)
-    os.system('echo User:`whoami` DATE:[`date`]  HOST: %s  IP: %s PORT:%s >> %s'%(host, ip,port,log_file) )
+    logf=open(log_file,  'a')
+    logdata="User: "+getpass.getuser()+" Date Time:["+DateTime+"] Host: "+ host+ " IP: "+ip+" Port: "+port+"\n"
+    logf.write(logdata)
+    logf.close()
     os.system('sudo ssh -p'+ port +' root@'+ip)
 
 
