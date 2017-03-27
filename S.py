@@ -1,6 +1,6 @@
 #!/usr/bin/python -t
 # Copyright (c) 2017 Ruslan Variushkin,  ruslan@host4.biz
-# Version 0.1.4
+# Version 0.1.5
 
 log_file='/var/log/multyssh/S.log'
 
