@@ -48,10 +48,13 @@ def find():
             from colorama import Fore, Back, Style
             #if re.match( "^\[", parts[0]) is not None:
             if re.match( "^#|^\[", parts[0]) is None:
-                Args=dict(s.split("=") for s in parts[1:])
-                user=getpass.getuser()
-                #print "Your user is "+ user
-                Group = Args['group']
+                try:
+                    Args=dict(s.split("=") for s in parts[1:])
+                    user=getpass.getuser()
+                    #print "Your user is "+ user
+                    Group = Args['group']
+                except:
+                    continue
                 if re.search( user, Args['users']) is None:
                     continue
                 if len(sys.argv) > 1:
