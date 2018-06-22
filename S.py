@@ -63,6 +63,7 @@ def find():
                         Host=parts[0]
                         IP = Args['ansible_ssh_host']
                         PORT = Args['ansible_ssh_port']
+                        USER = Args['ansible_ssh_user']
                         CountNum = CountNum+1
                         if Group != Last_Group:
                             print "\n"
@@ -80,7 +81,7 @@ def find():
     print "\nNumber of servers: ", Count_Server
     if CountNum == 1:
         #print  "IP: "+  IP	+" Group: "+ Group
-        connect(Host, IP,PORT)
+        connect(Host,IP,PORT,USER)
     exit(0)
 
 def Hostprint(host, ip, group):
@@ -88,7 +89,7 @@ def Hostprint(host, ip, group):
     print  (Fore.WHITE  + host + Fore.CYAN+"      IP: "+Fore.RESET +  ip +	 Fore.CYAN+"        Group: "+Fore.RESET + group )
 
 
-def connect(host, ip,port):
+def connect(host,ip,port,user):
     import os
     import getpass
     import datetime
@@ -102,7 +103,7 @@ def connect(host, ip,port):
     logdata="User: "+getpass.getuser()+" Date Time:["+DateTime+"] Host: "+ host+ " IP: "+ip+" Port: "+port+"\n"
     logf.write(logdata)
     logf.close()
-    os.system('sudo ssh -p'+ port +' root@'+ip)
+    os.system('sudo ssh -p'+ port +' '+user+'@'+ip)
 
 
 
